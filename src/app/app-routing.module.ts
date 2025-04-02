@@ -4,7 +4,7 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
 import { CustomerListComponent } from './components/customers/customer-list/customer-list.component';
 import { CustomerFormComponent } from './components/customers/customer-form/customer-form.component';
-import { NotfoundComponent } from './components/others/notfound/notfound.component';
+import { NotFoundComponent } from './components/others/notfound/notfound.component';
 import { AccessDeniedComponent } from './components/others/access-denied/access-denied.component';
 
 import { authGuard } from './guards/auth.guard';
@@ -24,7 +24,7 @@ const routes: Routes = [
     canActivate: [authGuard],
   },
   { path: 'access-denied', component: AccessDeniedComponent },
-  { path: '**', component: NotfoundComponent },
+  { path: '**', component: NotFoundComponent },
 ];
 
 @NgModule({

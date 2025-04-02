@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomerService } from 'src/app/services/customer.service';
-import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
+import { CustomerService } from '../../../services/customer.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-customer-list',
@@ -9,22 +10,37 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class CustomerListComponent implements OnInit {
   customers: any[] = [];
-  isAdmin: boolean = false;
 
   constructor(
     private customerService: CustomerService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
-  ngOnInit() {
-    this.customers = this.customerService.getCustomers();
-    this.isAdmin = this.authService.getUserRole() === 'Admin';
+  ngOnInit(): void {
+    this.loadCustomers();
   }
 
-  deleteCustomer(index: number) {
+  // Fetch customers from local storage
+  loadCustomers() {
+    this.customers = this.customerService.getCustomers();
+  }
+
+  // Navigate to the customer form for editing
+  editCustomer(index: number) {
+    this.router.navigate(['/customer-form'], { queryParams: { index } });
+  }
+
+  // Delete customer with confirmation
+  confirmDelete(index: number) {
     if (confirm('Are you sure you want to delete this customer?')) {
       this.customerService.deleteCustomer(index);
-      this.customers = this.customerService.getCustomers();
+      this.loadCustomers(); // Refresh the list after deletion
     }
+  }
+
+  // Check if the logged-in user is an Admin
+  isAdmin(): boolean {
+    return this.authService.getUserRole() === 'Admin';
   }
 }

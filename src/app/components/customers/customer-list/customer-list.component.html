@@ -1,1 +1,40 @@
-<p>customer-list works!</p>
+<div class="customer-list-container">
+  <h2>Customer List</h2>
+
+  <!-- Add Customer Button -->
+  <button class="add-btn" routerLink="/customer-form">+ Add Customer</button>
+
+  <!-- Table for displaying customers -->
+  <table class="customer-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let customer of customers; let i = index">
+        <td>{{ customer.name }}</td>
+        <td>{{ customer.email }}</td>
+        <td>{{ customer.phone }}</td>
+        <td>{{ customer.address }}</td>
+        <td>
+          <button class="edit-btn" (click)="editCustomer(i)">Edit</button>
+          <button
+            class="delete-btn"
+            (click)="confirmDelete(i)"
+            *ngIf="isAdmin(); i"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- If no customers found -->
+  <p *ngIf="customers.length === 0" class="no-customers">No customers found.</p>
+</div>
