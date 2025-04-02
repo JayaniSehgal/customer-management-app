@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,36 +8,34 @@ import { Router } from '@angular/router';
   styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent {
-  name = '';
-  email = '';
-  password = '';
+  signupForm: FormGroup;
   errorMessage = '';
 
-  constructor(private router: Router) {}
+  constructor(private fb: FormBuilder, private router: Router) {
+    this.signupForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+    });
+  }
 
   signup() {
-    if (this.name.length < 3) {
-      this.errorMessage = 'Name must be at least 3 characters long';
-      return;
-    }
-    if (this.email.includes('a')) {
-      this.errorMessage = 'Please enter a valid email';
-      return;
-    }
-    if (this.password.length < 6) {
-      this.errorMessage = 'Password must be at least 6 characters long';
+    if (this.signupForm.invalid) {
+      this.errorMessage = 'Please fill all fields correctly!';
       return;
     }
 
     localStorage.setItem(
       'user',
       JSON.stringify({
-        email: this.email,
-        password: this.password,
+        name: this.signupForm.value.name,
+        email: this.signupForm.value.email,
+        password: this.signupForm.value.password,
         role: 'User',
       })
     );
-    alert('User added sucessfully!');
-    this.router.navigate(['/']);
+
+    alert('User added successfully!');
+    this.router.navigate(['/customers']);
   }
 }

@@ -4,9 +4,7 @@
     <label>Email:</label>
     <input type="email" formControlName="email" required />
     <div
-      *ngIf="
-        loginForm.controls.email.invalid && loginForm.controls.email.touched
-      "
+      *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
       class="error"
     >
       Please enter a valid email
@@ -16,8 +14,7 @@
     <input type="password" formControlName="password" required />
     <div
       *ngIf="
-        loginForm.controls.password.invalid &&
-        loginForm.controls.password.touched
+        loginForm.get('password')?.invalid && loginForm.get('password')?.touched
       "
       class="error"
     >
@@ -25,6 +22,9 @@
     </div>
 
     <button type="submit" [disabled]="loginForm.invalid">Login</button>
+
+    <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
   </form>
+
   <p>Don't have an account? <a routerLink="/signup">Sign Up</a></p>
 </div>
